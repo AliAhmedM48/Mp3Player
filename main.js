@@ -1,6 +1,6 @@
       // HTML elements
       var audioElement = document.getElementById("audio");
-      var autoplayButton = document.getElementById("autoplay");
+      // var autoplayButton = document.getElementById("autoplay");
       var playButton = document.getElementById("play");
       var pauseButton = document.getElementById("pause");
       var stopButton = document.getElementById("stop");
@@ -90,9 +90,9 @@
       function pauseAudio() {
         audioElement.pause();
       }
-      function autoplayAudio() {
-        audioElement.setAttribute("autoplay", "autoplay");
-      }
+      // function autoplayAudio() {
+      //   audioElement.setAttribute("autoplay", "autoplay");
+      // }
       function muteAudio() {
         audioElement.muted = !audioElement.muted;
       }
@@ -105,7 +105,7 @@
       }
 
       // Events
-      autoplayButton.onclick = autoplayAudio;
+      // autoplayButton.onclick = autoplayAudio;
       playButton.onclick = playAudio;
       pauseButton.onclick = pauseAudio;
       stopButton.onclick = stopAudio;

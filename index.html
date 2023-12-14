@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mp3 player</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <main>
+      <div class="main-title">
+        <h1>Mp3 player using Vanilla JS</h1>
+      </div>
+      <figure>
+        <img id="image" alt="song photo" />
+      </figure>
+
+      <audio id="audio" loop controls>
+        <!-- <source src="resources/1.mp3" type="audio/mpeg" /> -->
+        <!-- <source src="resources/1.ogg" type="audio/mpeg" /> -->
+        your browser dont support audio
+      </audio>
+
+      <div class="controls">
+        <button id="previous">previous</button>
+        <button id="autoplay">autoplay</button>
+        <button id="play">play</button>
+        <button id="pause">pause</button>
+        <button id="stop">stop</button>
+        <button id="mute">mute</button>
+        <button id="next">next</button>
+
+        <div>
+          <span>Volume</span>
+          <input type="range" min="0" max="1" step="0.1" id="rangeVolume" />
+          <span>Current Time</span>
+          <input type="range" min="0" max="" value="1" id="rangeTime" />
+        </div>
+      </div>
+
+      <div class="songInfo">
+        <h2 id="trackName" class="trackName">Track Name</h2>
+        <h3 id="artistName" class="artistName">Track Artist</h3>
+      </div>
+    </main>
+    <!-- <script src="main.js"></script> -->
+    <script>
+      // HTML elements
+      var audioElement = document.getElementById("audio");
+      var autoplayButton = document.getElementById("autoplay");
+      var playButton = document.getElementById("play");
+      var pauseButton = document.getElementById("pause");
+      var stopButton = document.getElementById("stop");
+      var muteButton = document.getElementById("mute");
+      var previousButton = document.getElementById("previous");
+      console.log("🚀 ~ file: index.html:64 ~ previousButton:", previousButton);
+      var nextButton = document.getElementById("next");
+      console.log("🚀 ~ file: index.html:65 ~ nextButton:", nextButton);
+
+      var rangeVolumeInput = document.getElementById("rangeVolume");
+      var rangeTimeInput = document.getElementById("rangeTime");
+
+      var imageElement = document.getElementById("image");
+      var trackNameElement = document.getElementById("trackName");
+      var artistNameElement = document.getElementById("artistName");
+
+      // Variables
+      var trackArray = [
+        {
+          name: "لا تبكي يا صغيري",
+          artist: "رشا رزق",
+          img: "./images/لا_تبكي_ياصغيري.png",
+          songUrl: "./resources/1.mp3",
+        },
+        {
+          name: "ﺍﻟﺤﺪﻳﻘﺔ ﺍﻟﺴﺮﻳﺔ",
+          artist: "هاله الصباغ",
+          img: "./images/الحديقة_السرية.png",
+          songUrl: "./resources/2.mp3",
+        },
+        {
+          name: "أنتِ الأمان",
+          artist: "مينا نور الدين",
+          img: "./images/انت_الامان.png",
+          songUrl: "./resources/3.mp3",
+        },
+        {
+          name: "عهد الأصدقاء",
+          artist: "رشا رزق",
+          img: "./images/عهد_الاصدقاء.png",
+          songUrl: "./resources/4.mp3",
+        },
+      ];
+      var currentTrack = 1;
+      // Initialization
+      initialization();
+
+      // Functions
+      function initialization() {
+        console.log(localStorage.getItem("currentTrack"));
+        if (localStorage.getItem("currentTrack") !== null) {
+          currentTrack = localStorage.getItem("currentTrack");
+        }
+
+        trackNameElement.innerHTML = trackArray[currentTrack].name;
+        artistNameElement.innerHTML = trackArray[currentTrack].artist;
+        imageElement.setAttribute("src", trackArray[currentTrack].img);
+        audioElement.setAttribute("src", trackArray[currentTrack].songUrl);
+        if (currentTrack == trackArray.length - 1) nextButton.disabled = true;
+        else nextButton.disabled = false;
+        if (currentTrack == 0) previousButton.disabled = true;
+        else previousButton.disabled = false;
+        audioElement.volume = 0.1;
+        playAudio();
+      }
+
+      function nextAudio() {
+        currentTrack++;
+        localStorage.setItem("currentTrack", currentTrack);
+        initialization();
+        console.log(currentTrack);
+      }
+      function previousAudio() {
+        currentTrack--;
+        localStorage.setItem("currentTrack", currentTrack);
+        initialization();
+        console.log(currentTrack);
+      }
+
+      function playAudio() {
+        audioElement.play();
+      }
+      function stopAudio() {
+        audioElement.load();
+        audioElement.pause();
+      }
+      function pauseAudio() {
+        audioElement.pause();
+      }
+      function autoplayAudio() {
+        audioElement.setAttribute("autoplay", "autoplay");
+      }
+      function muteAudio() {
+        audioElement.muted = !audioElement.muted;
+      }
+
+      function volumeRangeAudio() {
+        audioElement.volume = rangeVolumeInput.value;
+      }
+      function timeRangeAudio() {
+        audioElement.currentTime = rangeTimeInput.value;
+      }
+
+      // Events
+      autoplayButton.onclick = autoplayAudio;
+      playButton.onclick = playAudio;
+      pauseButton.onclick = pauseAudio;
+      stopButton.onclick = stopAudio;
+      muteButton.onclick = muteAudio;
+      rangeVolumeInput.oninput = volumeRangeAudio;
+      rangeTimeInput.oninput = timeRangeAudio;
+
+      audioElement.addEventListener("durationchange", function () {
+        rangeTimeInput.max = audioElement.duration;
+      });
+
+      audioElement.addEventListener("timeupdate", function () {
+        rangeTimeInput.value = audioElement.currentTime;
+      });
+
+      audioElement.addEventListener("volumechange", function () {
+        rangeVolumeInput.value = audioElement.volume;
+      });
+
+      nextButton.onclick = nextAudio;
+      previousButton.onclick = previousAudio;
+    </script>
+  </body>
+</html>
